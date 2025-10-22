@@ -3,13 +3,15 @@
 ## Overview
 This document outlines privacy-focused, fully self-hosted alternatives to Ring doorbell/camera systems. All options avoid third-party data processing and can operate completely locally without cloud dependencies.
 
+**Current Setup**: This guide focuses on the **Reolink Video Doorbell PoE** (not other camera models). While other cameras are listed below for reference, our primary configuration uses the Reolink Video Doorbell PoE with Frigate NVR.
+
 ---
 
 ## Hardware Options
 
-### Video Doorbells (Frigate-Compatible)
+### Video Doorbell
 
-#### **Reolink Video Doorbell PoE** (Recommended)
+#### **Reolink Video Doorbell PoE**
 - **Price**: $80-130
 - **Resolution**: 2K (5MP)
 - **Storage**: microSD up to 256GB
@@ -22,32 +24,6 @@ This document outlines privacy-focused, fully self-hosted alternatives to Ring d
   - Local person detection
   - Multiple streams (main/sub)
 - **Best For**: Best overall Frigate integration, reliable RTSP streams
-
-#### **Amcrest AD410**
-- **Price**: $100-150
-- **Resolution**: 2K (2560x1920)
-- **Storage**: microSD up to 128GB
-- **Key Features**:
-  - Full RTSP and ONVIF support
-  - Native Frigate support
-  - Works fully offline
-  - Two-way audio
-  - Night vision
-  - Easy Home Assistant integration
-- **Best For**: Users wanting proven compatibility and reliability
-
-#### **Dahua VTO2202F** (Professional Grade)
-- **Price**: $150-200
-- **Resolution**: 1080p
-- **Storage**: Works with NVR
-- **Key Features**:
-  - Professional-grade build
-  - Excellent ONVIF/RTSP support
-  - Multiple stream options
-  - PoE powered
-  - Superior night vision
-  - Weatherproof (IP65)
-- **Best For**: Users wanting professional-grade quality and durability
 
 ---
 
@@ -154,8 +130,8 @@ This document outlines privacy-focused, fully self-hosted alternatives to Ring d
 
 ```
 Hardware: Compatible doorbell/camera with RTSP
-         + Mini PC (Intel N100 recommended)
-         + Storage drive (4TB USB3, ~$80)
+         + Mini PC (Intel N200 recommended)
+         + Storage drive (4TB HDD over USB-C, ~$80)
          + Google Coral TPU ($60)
 
 Software: Frigate NVR (free & open source)
@@ -220,13 +196,13 @@ Network: Standard network setup
 ### Entry-Level Setup (Best Value):
 ```
 Doorbell:        Reolink Video Doorbell PoE ($110)
-Server:          Intel N100 Mini PC ($180)
-Storage:         4TB USB3 Drive ($80)
+Server:          Intel N200 Mini PC ($200)
+Storage:         4TB HDD over USB-C ($80)
 TPU:             Google Coral USB ($60)
 Software:        Frigate NVR (free)
                  + Home Assistant (free)
 
-Total: ~$430 one-time (no subscriptions ever)
+Total: ~$450 one-time (no subscriptions ever)
 ```
 
 **Includes:**
@@ -244,14 +220,14 @@ Total: ~$430 one-time (no subscriptions ever)
 Doorbell:        Reolink Video Doorbell PoE ($110)
 IP Cameras:      2x Dahua IPC-HDW5442T-ZE ($320)
 Floodlight:      Reolink Duo Floodlight PoE ($225)
-Server:          Intel N100 Mini PC (8GB RAM) ($200)
+Server:          Intel N200 Mini PC (8GB RAM) ($220)
 Storage:         2TB NVMe SSD ($120)
 TPU:             Google Coral USB ($60)
 PoE Switch:      8-port PoE switch ($80)
 Software:        Frigate NVR (free)
                  + Home Assistant (free)
 
-Total: ~$1,115 one-time
+Total: ~$1,135 one-time
 ```
 
 **Includes:**
@@ -268,14 +244,14 @@ Total: ~$1,115 one-time
 ```
 Doorbell:        Reolink Video Doorbell PoE ($110)
 IP Camera:       Reolink RLC-810A ($90)
-Server:          Intel N100 Mini PC ($180)
-Storage:         2TB USB3 Drive ($50)
+Server:          Intel N200 Mini PC ($200)
+Storage:         2TB HDD over USB-C ($50)
 TPU:             Google Coral USB ($60)
 PoE Injector:    2-port PoE injector ($25)
 Software:        Frigate NVR (free)
                  + Home Assistant (free)
 
-Total: ~$515 one-time
+Total: ~$535 one-time
 ```
 
 **Good for:**
@@ -296,7 +272,7 @@ Total: Starting at ~$165+
 ```
 
 **Note**:
-- Intel N100 Mini PC can handle 6-8 cameras with Coral TPU
+- Intel N200 Mini PC can handle 8-10 cameras with Coral TPU
 - PoE cameras simplify wiring (power + data in one cable)
 - All recommended hardware has proven Frigate compatibility
 
@@ -306,17 +282,26 @@ Total: Starting at ~$165+
 
 To ensure complete privacy:
 
-1. **Standard Network Setup**:
+1. **Block Camera Internet Access** (CRITICAL):
+   - **Block the Reolink Video Doorbell PoE from accessing the internet**
+   - Configure firewall rules at your router to prevent outbound internet traffic from the camera
+   - Allow only local network communication (for RTSP streams to Frigate)
+   - This prevents any telemetry, phone-home attempts, or data exfiltration to Reolink servers
+   - Example router rule: Block all WAN traffic from camera IP (192.168.1.50)
+
+2. **Standard Network Setup**:
    - Use regular home network (no VLAN required)
    - Cameras operate fully locally
    - All processing happens on your NVR server
 
-2. **DNS Blocking** (Optional):
+3. **DNS Blocking** (Additional Layer):
    - Block manufacturer domains at router/Pi-hole
    - Prevents any phone-home attempts
+   - Example domains to block: `*.reolink.com`, `*.reolink.host`
 
-3. **Firmware**:
+4. **Firmware**:
    - Keep firmware updated for security patches
+   - Download firmware directly from manufacturer and update locally
    - Most modern cameras support standard RTSP/ONVIF protocols
 
 ---
@@ -362,14 +347,14 @@ Frigate is purpose-built for local, privacy-focused home security:
 ## Hardware Requirements
 
 ### Minimum (1-2 cameras):
-- **CPU**: Intel N100 or Raspberry Pi 4
+- **CPU**: Intel N200 or Raspberry Pi 4
 - **RAM**: 4GB
 - **Storage**: 500GB per camera for 30 days
 - **TPU**: Google Coral USB (required for real-time detection)
 - **Power**: ~20W total (server + cameras)
 
 ### Recommended (3-6 cameras):
-- **CPU**: Intel N100 or better (recommended: 8GB model)
+- **CPU**: Intel N200 (recommended: 8GB model)
 - **RAM**: 8GB
 - **Storage**: 1TB per camera for 30 days
 - **TPU**: Google Coral USB (essential)
@@ -381,7 +366,7 @@ Frigate is purpose-built for local, privacy-focused home security:
 ### Power Consumption
 
 **Server:**
-- Intel N100 Mini PC: ~10-15W idle, ~20-25W under load
+- Intel N200 Mini PC: ~10-15W idle, ~20-25W under load
 - Raspberry Pi 4: ~3-5W idle, ~6-8W under load
 - Google Coral USB TPU: ~2-3W
 
@@ -462,7 +447,7 @@ For backup power during outages:
 ### Step 1: Install Doorbell Hardware
 
 1. **Wire the doorbell**:
-   - Connect to existing doorbell power (8-24V AC/DC) or use PoE
+   - Connect via PoE (Power over Ethernet)
    - Insert microSD card for local backup storage
    - Power on and connect to your network
 
@@ -504,7 +489,7 @@ vlc rtsp://admin:password@192.168.1.50:554/h264Preview_01_main
 
 1. Download Home Assistant OS image for your hardware
 2. Flash to USB/SSD using Balena Etcher
-3. Boot Intel N100 from the drive
+3. Boot Intel N200 from the drive
 4. Wait 20 minutes for initial setup
 5. Access at `http://homeassistant.local:8123`
 
