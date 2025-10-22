@@ -1,0 +1,134 @@
+# Frigate Configuration
+# Documentation: https://docs.frigate.video/
+
+# MQTT Configuration (required for Home Assistant integration)
+mqtt:
+  enabled: true
+  host: mosquitto  # Use service name from docker-compose
+  port: 1883
+  # topic_prefix: frigate
+  # client_id: frigate
+  # user: username  # Uncomment and set if MQTT requires authentication
+  # password: password
+
+# Database
+database:
+  path: /config/frigate.db
+
+# Detectors - Google Coral TPU
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+# Configure your cameras here
+cameras:
+  # Example doorbell camera - UNCOMMENT AND CONFIGURE WHEN YOUR DOORBELL ARRIVES
+  # doorbell:
+  #   enabled: true
+  #   ffmpeg:
+  #     inputs:
+  #       - path: rtsp://admin:password@192.168.1.50:554/h264Preview_01_main
+  #         roles:
+  #           - record
+  #       - path: rtsp://admin:password@192.168.1.50:554/h264Preview_01_sub
+  #         roles:
+  #           - detect
+  #   detect:
+  #     enabled: true
+  #     width: 640  # Use substream resolution for detection
+  #     height: 480
+  #     fps: 5
+  #   record:
+  #     enabled: true
+  #     retain:
+  #       days: 30  # Keep recordings for 30 days
+  #       mode: all  # Record 24/7
+  #     events:
+  #       retain:
+  #         default: 30  # Keep event clips for 30 days
+  #         mode: active_objects
+  #   snapshots:
+  #     enabled: true
+  #     timestamp: false
+  #     bounding_box: true
+  #     crop: false
+  #     retain:
+  #       default: 30
+  #   objects:
+  #     track:
+  #       - person
+  #       - dog
+  #       - cat
+  #       - car
+  #   zones:
+  #     # Define zones for specific detection areas
+  #     front_door:
+  #       coordinates: 640,0,1280,0,1280,720,640,720  # Adjust based on your camera view
+  #       objects:
+  #         - person
+
+  # Example: Test camera using a public stream (for initial testing)
+  # Remove this once you have your real doorbell
+  test_camera:
+    enabled: false  # Set to true to enable test camera
+    ffmpeg:
+      inputs:
+        - path: rtsp://rtsp.stream/pattern  # Public test stream
+          roles:
+            - detect
+    detect:
+      enabled: true
+      width: 640
+      height: 480
+      fps: 5
+    objects:
+      track:
+        - person
+        - car
+
+# Global object detection settings
+objects:
+  track:
+    - person
+    - dog
+    - cat
+    - car
+  filters:
+    person:
+      min_area: 5000  # Minimum pixels to consider detection valid
+      max_area: 100000
+      threshold: 0.7  # Confidence threshold (0-1)
+
+# Recording settings
+record:
+  enabled: true
+  retain:
+    days: 30  # Default retention for all cameras
+    mode: all  # Record 24/7 (options: all, motion, active_objects)
+  events:
+    retain:
+      default: 30
+      mode: active_objects  # Keep event clips when objects are detected
+
+# Snapshots
+snapshots:
+  enabled: true
+  timestamp: true
+  bounding_box: true
+  crop: false
+  retain:
+    default: 30
+
+# Live view settings
+live:
+  stream_name: doorbell  # Default camera for live view
+
+# UI settings
+ui:
+  use_experimental: false
+  live_mode: mse  # Options: mse, jsmpeg, webrtc
+
+# Telemetry (opt out if desired)
+telemetry:
+  version_check: true

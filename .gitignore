@@ -1,0 +1,31 @@
+# Environment files with secrets
+.env
+
+# Home Assistant data
+homeassistant/*
+!homeassistant/.gitkeep
+
+# Frigate data
+frigate/storage/*
+!frigate/storage/.gitkeep
+frigate/config/frigate.db*
+frigate/config/*.log
+
+# MQTT data
+mosquitto/data/*
+!mosquitto/data/.gitkeep
+mosquitto/log/*
+!mosquitto/log/.gitkeep
+
+# Docker volumes
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+
+# Temporary files
+.DS_Store
+Thumbs.db
+*~

@@ -1,0 +1,69 @@
+version: '3.9'
+
+services:
+  # Mosquitto MQTT Broker (required for Frigate <-> Home Assistant communication)
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:2
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    networks:
+      - homelab
+
+  # Home Assistant
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+    volumes:
+      - ./homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    environment:
+      - TZ=${TZ:-America/New_York}
+    depends_on:
+      - mosquitto
+
+  # Frigate NVR
+  frigate:
+    container_name: frigate
+    image: ghcr.io/blakeblackshear/frigate:stable
+    restart: unless-stopped
+    privileged: true
+    shm_size: "512mb"  # Increase if you get "Bus error" - try 1gb or 2gb
+    devices:
+      - /dev/bus/usb:/dev/bus/usb  # For Google Coral USB TPU
+      # Uncomment if you have Intel GPU for hardware acceleration
+      # - /dev/dri/renderD128:/dev/dri/renderD128
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./frigate/config:/config
+      - ./frigate/storage:/media/frigate
+      - type: tmpfs
+        target: /tmp/cache
+        tmpfs:
+          size: 1000000000  # 1GB tmpfs for cache
+    ports:
+      - "8971:8971"  # Web UI (authenticated)
+      - "8554:8554"  # RTSP feeds
+      - "8555:8555/tcp"  # WebRTC over TCP
+      - "8555:8555/udp"  # WebRTC over UDP
+    environment:
+      - TZ=${TZ:-America/New_York}
+      - FRIGATE_RTSP_PASSWORD=${FRIGATE_RTSP_PASSWORD:-changeme}
+    networks:
+      - homelab
+    depends_on:
+      - mosquitto
+
+networks:
+  homelab:
+    driver: bridge
