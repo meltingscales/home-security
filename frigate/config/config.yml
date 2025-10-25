@@ -23,6 +23,49 @@ detectors:
 
 # Configure your cameras here
 cameras:
+  # Reolink RLC-510A Camera
+  reolink_camera:
+    enabled: true
+    ffmpeg:
+      inputs:
+        # Main stream for recording (high quality)
+        - path: rtsp://{REOLINK_USERNAME}:{REOLINK_PASSWORD}@192.168.0.172:554/h264Preview_01_main
+          roles:
+            - record
+        # Sub stream for detection (lower quality, less CPU)
+        - path: rtsp://{REOLINK_USERNAME}:{REOLINK_PASSWORD}@192.168.0.172:554/h264Preview_01_sub
+          roles:
+            - detect
+    detect:
+      enabled: true
+      width: 640  # Substream resolution
+      height: 480
+      fps: 5
+    record:
+      enabled: true
+      retain:
+        days: 30
+        mode: all  # Record 24/7
+      alerts:
+        retain:
+          days: 30
+      detections:
+        retain:
+          days: 30
+    snapshots:
+      enabled: true
+      timestamp: true
+      bounding_box: true
+      crop: false
+      retain:
+        default: 30
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+        - car
+
   # Example doorbell camera - UNCOMMENT AND CONFIGURE WHEN YOUR DOORBELL ARRIVES
   # doorbell:
   #   enabled: true
@@ -106,12 +149,12 @@ record:
   retain:
     days: 30  # Default retention for all cameras
     mode: all  # Record 24/7 (options: all, motion, active_objects)
-  events:
+  alerts:
     retain:
-      default: 30
-      mode: active_objects  # Keep event clips when objects are detected
-
-# Snapshots
+      days: 30
+  detections:
+    retain:
+      days: 30
 snapshots:
   enabled: true
   timestamp: true
@@ -122,13 +165,13 @@ snapshots:
 
 # Live view settings
 live:
-  stream_name: doorbell  # Default camera for live view
+  stream_name: reolink_camera  # Default camera for live view
 
 # UI settings
 ui:
   use_experimental: false
-  live_mode: mse  # Options: mse, jsmpeg, webrtc
-
-# Telemetry (opt out if desired)
 telemetry:
   version_check: true
+detect:
+  enabled: true
+version: 0.16-0
