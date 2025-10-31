@@ -445,7 +445,7 @@ For backup power during outages:
 
 ## Operating System Options
 
-Before setting up your Frigate NVR server, you need to choose an operating system. Here are the three main options:
+Before setting up your Frigate NVR server, you need to choose an operating system. Here are the two main options:
 
 ### Option 1: Home Assistant OS (Recommended for Beginners)
 - **Pros**:
@@ -479,26 +479,12 @@ Before setting up your Frigate NVR server, you need to choose an operating syste
   # Reboot, then use docker-compose with your configs
   ```
 
-### Option 3: Proxmox VE (Advanced)
-- **Pros**:
-  - Run multiple VMs and containers on one machine
-  - Great for homelab expansion and experimentation
-  - Snapshots and backups built-in
-  - Can run HAOS in a VM alongside other systems
-- **Cons**:
-  - Most complex to set up and manage
-  - Virtualization overhead (minimal on modern hardware)
-  - Overkill if you only want Frigate/HA
-- **Best for**: Users planning to run multiple systems or expanding their homelab
-- **Setup**: Install Proxmox VE, create VMs for Home Assistant OS or Linux + Docker
-
 ### Which Should You Choose?
 
 - **Just want it to work?** → Home Assistant OS
 - **Want flexibility and control?** → Debian/Ubuntu with Docker
-- **Building a homelab?** → Proxmox VE
 
-**Note**: The Beelink EQ14 N150 works excellently with all three options. The dual 2.5G NICs are particularly useful for separating camera traffic from general network traffic if desired.
+**Note**: The Beelink EQ14 N150 works excellently with both options. The dual 2.5G NICs are particularly useful for separating camera traffic from general network traffic if desired.
 
 ---
 
