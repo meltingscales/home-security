@@ -3,7 +3,7 @@
 ## Overview
 This document outlines privacy-focused, fully self-hosted alternatives to Ring doorbell/camera systems. All options avoid third-party data processing and can operate completely locally without cloud dependencies.
 
-**Current Setup**: This guide focuses on the **Reolink Video Doorbell PoE** (not other camera models). While other cameras are listed below for reference, our primary configuration uses the Reolink Video Doorbell PoE with Frigate NVR.
+**Current Setup**: This guide focuses on the **Reolink Video Doorbell PoE** and **Reolink Duo Floodlight PoE**. While other cameras are listed below for reference, our primary configuration uses these two Reolink cameras with Frigate NVR, powered by a Beelink EQ14 N150 mini PC with Google Coral TPU.
 
 ---
 
