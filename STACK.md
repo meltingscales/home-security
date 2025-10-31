@@ -130,7 +130,7 @@ This document outlines privacy-focused, fully self-hosted alternatives to Ring d
 
 ```
 Hardware: Compatible doorbell/camera with RTSP
-         + Mini PC (Intel N200 recommended)
+         + Mini PC (Beelink EQ14 N150 recommended - Frigate Developer's current favorite)
          + Storage drive (4TB HDD over USB-C, ~$80)
          + Google Coral TPU ($60)
 
@@ -196,7 +196,7 @@ Network: Standard network setup
 ### Entry-Level Setup (Best Value):
 ```
 Doorbell:        Reolink Video Doorbell PoE ($110)
-Server:          Intel N200 Mini PC ($200)
+Server:          Beelink EQ14 N150 Mini PC ($200)
 Storage:         4TB HDD over USB-C ($80)
 TPU:             Google Coral USB ($60)
 Software:        Frigate NVR (free)
@@ -220,7 +220,7 @@ Total: ~$450 one-time (no subscriptions ever)
 Doorbell:        Reolink Video Doorbell PoE ($110)
 IP Cameras:      2x Dahua IPC-HDW5442T-ZE ($320)
 Floodlight:      Reolink Duo Floodlight PoE ($225)
-Server:          Intel N200 Mini PC (8GB RAM) ($220)
+Server:          Beelink EQ14 N150 Mini PC (8GB RAM) ($220)
 Storage:         2TB NVMe SSD ($120)
 TPU:             Google Coral USB ($60)
 PoE Switch:      8-port PoE switch ($80)
@@ -244,7 +244,7 @@ Total: ~$1,135 one-time
 ```
 Doorbell:        Reolink Video Doorbell PoE ($110)
 IP Camera:       Reolink RLC-810A ($90)
-Server:          Intel N200 Mini PC ($200)
+Server:          Beelink EQ14 N150 Mini PC ($200)
 Storage:         2TB HDD over USB-C ($50)
 TPU:             Google Coral USB ($60)
 PoE Injector:    2-port PoE injector ($25)
@@ -272,9 +272,10 @@ Total: Starting at ~$165+
 ```
 
 **Note**:
-- Intel N200 Mini PC can handle 8-10 cameras with Coral TPU
+- Beelink EQ14 N150 can handle 8-10 cameras with Coral TPU
 - PoE cameras simplify wiring (power + data in one cable)
 - All recommended hardware has proven Frigate compatibility
+- Beelink is the Frigate Developer's current favorite brand for mini PCs
 
 ---
 
@@ -347,14 +348,14 @@ Frigate is purpose-built for local, privacy-focused home security:
 ## Hardware Requirements
 
 ### Minimum (1-2 cameras):
-- **CPU**: Intel N200 or Raspberry Pi 4
+- **CPU**: Beelink EQ14 N150 or Raspberry Pi 4
 - **RAM**: 4GB
 - **Storage**: 500GB per camera for 30 days
 - **TPU**: Google Coral USB (required for real-time detection)
 - **Power**: ~20W total (server + cameras)
 
 ### Recommended (3-6 cameras):
-- **CPU**: Intel N200 (recommended: 8GB model)
+- **CPU**: Beelink EQ14 N150 (recommended: 8GB model)
 - **RAM**: 8GB
 - **Storage**: 1TB per camera for 30 days
 - **TPU**: Google Coral USB (essential)
@@ -366,7 +367,7 @@ Frigate is purpose-built for local, privacy-focused home security:
 ### Power Consumption
 
 **Server:**
-- Intel N200 Mini PC: ~10-15W idle, ~20-25W under load
+- Beelink EQ14 N150 Mini PC: ~10-15W idle, ~20-25W under load
 - Raspberry Pi 4: ~3-5W idle, ~6-8W under load
 - Google Coral USB TPU: ~2-3W
 
@@ -489,7 +490,7 @@ vlc rtsp://admin:password@192.168.1.50:554/h264Preview_01_main
 
 1. Download Home Assistant OS image for your hardware
 2. Flash to USB/SSD using Balena Etcher
-3. Boot Intel N200 from the drive
+3. Boot Beelink EQ14 N150 from the drive
 4. Wait 20 minutes for initial setup
 5. Access at `http://homeassistant.local:8123`
 
