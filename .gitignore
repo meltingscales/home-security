@@ -10,6 +10,10 @@ frigate/storage/*
 !frigate/storage/.gitkeep
 frigate/config/frigate.db*
 frigate/config/*.log
+frigate/config/.exports
+frigate/config/.jwt_secret
+frigate/config/.timeline
+frigate/config/.vacuum
 
 # MQTT data
 mosquitto/data/*

@@ -59,8 +59,8 @@ services:
     environment:
       - TZ=${TZ:-America/New_York}
       - FRIGATE_RTSP_PASSWORD=${FRIGATE_RTSP_PASSWORD:-changeme}
-      - REOLINK_USERNAME=${REOLINK_USERNAME:-admin}
-      - REOLINK_PASSWORD=${REOLINK_PASSWORD}
+      - FRIGATE_REOLINK_USERNAME=${FRIGATE_REOLINK_USERNAME:-admin}
+      - FRIGATE_REOLINK_PASSWORD=${FRIGATE_REOLINK_PASSWORD}
     networks:
       - homelab
     depends_on:
