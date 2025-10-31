@@ -443,6 +443,65 @@ For backup power during outages:
 
 ---
 
+## Operating System Options
+
+Before setting up your Frigate NVR server, you need to choose an operating system. Here are the three main options:
+
+### Option 1: Home Assistant OS (Recommended for Beginners)
+- **Pros**:
+  - All-in-one solution with minimal configuration
+  - Easiest setup process
+  - Automatic updates and built-in add-on store
+  - Frigate installs as a native add-on
+- **Cons**:
+  - Less flexible for running non-Home Assistant services
+  - Harder to troubleshoot or customize outside HA ecosystem
+- **Best for**: Users who want Home Assistant + Frigate with minimal tinkering
+- **Setup**: Flash HAOS image to NVMe/SSD, boot, install Frigate as an add-on
+
+### Option 2: Debian/Ubuntu with Docker (Most Flexible)
+- **Pros**:
+  - Full control over the system
+  - Can run any services you want
+  - Works with existing docker-compose configurations
+  - Well-documented and widely supported
+- **Cons**:
+  - More manual configuration required
+  - You manage all updates and maintenance
+- **Best for**: Users who want flexibility to run other services or prefer Docker
+- **Recommended**: Debian 12 or Ubuntu 24.04 LTS Server
+- **Setup**:
+  ```bash
+  # Install Debian 12 or Ubuntu 24.04 Server
+  # Then install Docker:
+  curl -fsSL https://get.docker.com | sh
+  sudo usermod -aG docker $USER
+  # Reboot, then use docker-compose with your configs
+  ```
+
+### Option 3: Proxmox VE (Advanced)
+- **Pros**:
+  - Run multiple VMs and containers on one machine
+  - Great for homelab expansion and experimentation
+  - Snapshots and backups built-in
+  - Can run HAOS in a VM alongside other systems
+- **Cons**:
+  - Most complex to set up and manage
+  - Virtualization overhead (minimal on modern hardware)
+  - Overkill if you only want Frigate/HA
+- **Best for**: Users planning to run multiple systems or expanding their homelab
+- **Setup**: Install Proxmox VE, create VMs for Home Assistant OS or Linux + Docker
+
+### Which Should You Choose?
+
+- **Just want it to work?** → Home Assistant OS
+- **Want flexibility and control?** → Debian/Ubuntu with Docker
+- **Building a homelab?** → Proxmox VE
+
+**Note**: The Beelink EQ14 N150 works excellently with all three options. The dual 2.5G NICs are particularly useful for separating camera traffic from general network traffic if desired.
+
+---
+
 ## Complete Setup Guide
 
 ### Step 1: Install Doorbell Hardware
