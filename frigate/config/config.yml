@@ -4,7 +4,7 @@
 # MQTT Configuration (required for Home Assistant integration)
 mqtt:
   enabled: true
-  host: mosquitto  # Use service name from docker-compose
+  host: mosquitto # Use service name from docker-compose
   port: 1883
   # topic_prefix: frigate
   # client_id: frigate
@@ -24,7 +24,7 @@ detectors:
 # Configure your cameras here
 cameras:
   # Reolink RLC-510A Camera
-  reolink_camera:
+  reolink_camera_1:
     enabled: true
     ffmpeg:
       inputs:
@@ -38,14 +38,14 @@ cameras:
             - detect
     detect:
       enabled: true
-      width: 640  # Substream resolution
+      width: 640 # Substream resolution
       height: 480
       fps: 5
     record:
       enabled: true
       retain:
         days: 30
-        mode: all  # Record 24/7
+        mode: all # Record 24/7
       alerts:
         retain:
           days: 30
@@ -114,10 +114,10 @@ cameras:
   # Example: Test camera using a public stream (for initial testing)
   # Remove this once you have your real doorbell
   test_camera:
-    enabled: false  # Set to true to enable test camera
+    enabled: false # Set to true to enable test camera
     ffmpeg:
       inputs:
-        - path: rtsp://rtsp.stream/pattern  # Public test stream
+        - path: rtsp://rtsp.stream/pattern # Public test stream
           roles:
             - detect
     detect:
@@ -139,16 +139,16 @@ objects:
     - car
   filters:
     person:
-      min_area: 5000  # Minimum pixels to consider detection valid
+      min_area: 5000 # Minimum pixels to consider detection valid
       max_area: 100000
-      threshold: 0.7  # Confidence threshold (0-1)
+      threshold: 0.7 # Confidence threshold (0-1)
 
 # Recording settings
 record:
   enabled: true
   retain:
-    days: 30  # Default retention for all cameras
-    mode: all  # Record 24/7 (options: all, motion, active_objects)
+    days: 30 # Default retention for all cameras
+    mode: all # Record 24/7 (options: all, motion, active_objects)
   alerts:
     retain:
       days: 30
