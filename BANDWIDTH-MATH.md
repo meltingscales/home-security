@@ -1,4 +1,4 @@
-# SD Card Storage Math for IP Cameras
+# Bandwidth & Storage Math for IP Camera Systems
 
 ## Why Use SD Cards?
 
@@ -10,6 +10,168 @@ SD cards provide **local backup storage** directly in your IP cameras. This is c
 4. **Retrieval**: Can pull SD card and review footage directly if NVR is unavailable
 
 **Important**: SD cards are NOT a replacement for your NVR - they're emergency backup only. Most cameras will loop/overwrite oldest footage when the card fills up.
+
+---
+
+## Network & Storage Bandwidth Requirements
+
+### Your Current Stack Bandwidth Needs
+
+**Hardware:**
+- Reolink Video Doorbell PoE (2K / 5MP)
+- Reolink Duo Floodlight PoE (4K / 8MP dual-lens)
+- Beelink EQ14 N150 Mini PC
+- 4TB HDD over USB 3.0/3.1
+
+**Camera Bandwidth:**
+- Doorbell (2K): 4-6 Mbps average = ~5 Mbps
+- Floodlight (4K): 8-12 Mbps average = ~10 Mbps
+- **Total Network Traffic**: ~15 Mbps (or ~1.875 MB/s)
+
+**Storage Write Speed Required:**
+- Recording both cameras 24/7: ~1.875 MB/s sustained write
+- Daily storage: ~162 GB/day (54 GB doorbell + 108 GB floodlight)
+
+---
+
+### USB Bandwidth Analysis
+
+#### USB 3.0 (Your Current Setup)
+- **Theoretical Max**: 5 Gbps (640 MB/s)
+- **Real-World Speed**: ~300-400 MB/s sustained
+- **Your Requirement**: 1.875 MB/s
+- **Overhead Available**: **160-213x more than needed**
+- **Verdict**: ✅ **More than sufficient** - massively over-specced
+
+#### USB 3.1 Gen 1 (5 Gbps)
+- Same as USB 3.0
+- **Overhead**: 160-213x more than needed
+- **Verdict**: ✅ **More than sufficient** (identical to USB 3.0)
+
+#### USB 3.1 Gen 2 (10 Gbps)
+- **Theoretical Max**: 10 Gbps (1,280 MB/s)
+- **Real-World Speed**: ~700-900 MB/s sustained
+- **Your Requirement**: 1.875 MB/s
+- **Overhead Available**: **373-480x more than needed**
+- **Verdict**: ✅ **Extreme overkill** (unnecessary for 2 cameras)
+
+**Bottom Line**: USB 3.0 is perfect for your 2-camera setup. Even with 10-15 cameras, USB 3.0 would still have plenty of headroom.
+
+---
+
+### Network Backbone Bandwidth Analysis (CAT6)
+
+#### CAT6 Ethernet Specifications
+
+**Standard 1 Gbps Mode** (up to 100m):
+- **Theoretical Max**: 1 Gbps (1000 Mbps / 125 MB/s)
+- **Real-World Speed**: ~900-950 Mbps practical throughput
+- **Your Requirement**: 15 Mbps for 2 cameras
+- **Overhead Available**: **60-63x more than needed**
+- **Verdict**: ✅ **Excellent** - you could run 50+ cameras on 1 Gbps
+
+**10 Gbps Mode** (up to 55m/180ft):
+- **Theoretical Max**: 10 Gbps (10,000 Mbps / 1,250 MB/s)
+- **Real-World Speed**: ~9,000-9,500 Mbps practical
+- **Your Requirement**: 15 Mbps for 2 cameras
+- **Overhead Available**: **600-633x more than needed**
+- **Verdict**: ✅ **Massive overkill** (only needed for large deployments)
+
+#### Cable Run Considerations
+
+**For your 2-camera setup:**
+- **Recommended**: CAT6 in standard 1 Gbps mode
+- **Max distance**: 100m (328 feet) from switch to camera
+- **Your bandwidth usage**: ~1.5% of available capacity
+
+**Scaling up (hypothetical 10-camera setup):**
+- 10x 4K cameras: ~100 Mbps total
+- Still only 10% of 1 Gbps capacity
+- CAT6 standard mode still excellent
+
+---
+
+### Complete System Bandwidth Map
+
+```
+[Cameras] --PoE/CAT6--> [PoE Switch] --CAT6--> [Beelink EQ14]
+                                                      |
+                                                   USB 3.0
+                                                      |
+                                                [4TB HDD Storage]
+
+Camera Network (CAT6 @ 1 Gbps):
+  - Doorbell: 5 Mbps    (0.5% capacity used)
+  - Floodlight: 10 Mbps (1.0% capacity used)
+  - Total: 15 Mbps      (1.5% capacity used)
+  - Available: 985 Mbps (98.5% free)
+
+Storage Write (USB 3.0 @ 5 Gbps):
+  - Write speed needed: 1.875 MB/s
+  - USB 3.0 real-world: 300-400 MB/s
+  - Capacity used: <1%
+  - Available: 99%+ free
+```
+
+---
+
+### Bandwidth Bottleneck Analysis
+
+**Potential Bottlenecks** (ranked by likelihood):
+
+1. **Hard Drive Write Speed** ⚠️
+   - 4TB HDD typical: 100-150 MB/s sustained
+   - Your needs: 1.875 MB/s
+   - **Status**: ✅ No issue (79-80x overhead)
+
+2. **Network Switch Capacity**
+   - Gigabit switch: 1000 Mbps
+   - Your needs: 15 Mbps
+   - **Status**: ✅ No issue (67x overhead)
+
+3. **USB 3.0 Bandwidth**
+   - USB 3.0: 300-400 MB/s real-world
+   - Your needs: 1.875 MB/s
+   - **Status**: ✅ No issue (160-213x overhead)
+
+4. **Beelink CPU/RAM**
+   - N150 processor + 8GB RAM
+   - Handles 8-10 cameras easily with Coral TPU
+   - Your setup: 2 cameras
+   - **Status**: ✅ No issue (massively over-provisioned)
+
+**Actual Bottleneck**: None. Your system is **massively over-provisioned** for 2 cameras.
+
+---
+
+### Expansion Capacity
+
+**How many cameras can your current infrastructure handle?**
+
+| Component | Current | 2 Cameras | 5 Cameras | 10 Cameras | Bottleneck |
+|-----------|---------|-----------|-----------|------------|------------|
+| **Network (CAT6 1Gbps)** | 1000 Mbps | 15 Mbps | 50 Mbps | 100 Mbps | ✅ (10x overhead) |
+| **USB 3.0 Storage** | 5 Gbps | 15 Mbps | 50 Mbps | 100 Mbps | ✅ (50x overhead) |
+| **HDD Write (4TB)** | 150 MB/s | 1.9 MB/s | 6.25 MB/s | 12.5 MB/s | ✅ (12x overhead) |
+| **Beelink N150 CPU** | 8-10 cams | 2 cams | 5 cams | 10 cams | ✅ (at limit) |
+| **Google Coral TPU** | 10-15 cams | 2 cams | 5 cams | 10 cams | ✅ (5 fps ea.) |
+
+**Maximum Capacity**: Your current hardware can easily support **8-10 cameras** before hitting any bottlenecks (CPU/TPU would be the first limit).
+
+---
+
+### Upgrade Path (If Expanding)
+
+**If you add 3-8 more cameras, you'll need:**
+
+1. **Nothing immediately** - current infrastructure handles 10 cameras
+2. **Larger PoE Switch** - if you run out of ports (need 8-16 port)
+3. **More Storage** - add another 4TB drive via second USB 3.0 port (Beelink has multiple)
+4. **Possible TPU Upgrade** - consider second Coral or PCIe Coral for 10+ cameras
+
+**Cost to expand to 10 cameras**: ~$0-50 (just larger PoE switch if needed)
+
+**Your network backbone (CAT6) and USB 3.0 storage interface need no upgrades for up to 10 cameras.**
 
 ---
 
