@@ -175,6 +175,222 @@ Storage Write (USB 3.0 @ 5 Gbps):
 
 ---
 
+## HDD Storage Duration & Lifespan Analysis
+
+### Your 4TB Drive: How Long Does It Last?
+
+**Your Current Setup (2 Cameras):**
+- **Daily Recording**: 162 GB/day (54 GB doorbell + 108 GB floodlight)
+- **4TB Drive Capacity**: ~3,725 GB usable (after formatting)
+- **Retention Duration**: **~23 days** of continuous 24/7 recording
+
+**Answer**: ✅ **4TB is good for 3+ weeks** of footage. This is reasonable for most home security needs.
+
+---
+
+### Storage Duration Comparison Chart
+
+**For Your 2-Camera Setup** (162 GB/day @ 24/7 recording):
+
+| Drive Size | Usable Capacity | Retention Time | Cost (approx) | Notes |
+|------------|-----------------|----------------|---------------|-------|
+| **2TB** | ~1,860 GB | ~11.5 days | $50-70 | Minimum viable |
+| **4TB** | ~3,725 GB | **~23 days** | **$80-100** | ✅ **Current setup - Good** |
+| **6TB** | ~5,590 GB | ~34.5 days | $120-150 | Better for high-activity areas |
+| **8TB** | ~7,450 GB | ~46 days | $150-180 | 1.5 months retention |
+| **10TB** | ~9,300 GB | ~57 days | $180-220 | 2 months retention |
+| **12TB** | ~11,160 GB | ~69 days | $220-280 | Overkill for 2 cameras |
+
+**Recommendation for 2 cameras**: **4-6TB** is the sweet spot for cost vs. retention.
+
+---
+
+### What If You Expand to More Cameras?
+
+**3 Cameras** (2K doorbell + 4K floodlight + 4K IP camera):
+- Daily: ~248 GB/day
+- **4TB lasts**: ~15 days
+- **6TB lasts**: ~22.5 days ✅ (recommended)
+
+**5 Cameras** (add 2 more 4K cameras):
+- Daily: ~420 GB/day
+- **4TB lasts**: ~9 days
+- **8TB lasts**: ~17.7 days ✅ (recommended)
+
+**10 Cameras** (4x 2K + 6x 4K):
+- Daily: ~860 GB/day
+- **8TB lasts**: ~8.7 days
+- **12TB lasts**: ~13 days
+- **16TB lasts**: ~17.4 days ✅ (recommended)
+
+**Rule of Thumb**: Aim for 14-30 days retention. Less than 14 days and you might miss important events if you're on vacation.
+
+---
+
+### HDD Lifespan & Health
+
+#### Expected Lifespan (24/7 Surveillance Use)
+
+**Consumer HDDs** (WD Blue, Seagate Barracuda):
+- **Not recommended** for 24/7 recording
+- Typical lifespan: 1-2 years under continuous writes
+- Rated for 8x5 operation (8 hours/day, 5 days/week)
+
+**Surveillance HDDs** (WD Purple, Seagate SkyHawk) ⭐ **Recommended**:
+- **Designed for 24/7 operation**
+- Expected lifespan: **3-5 years** under continuous writes
+- Rated for 180 TB/year workload (or more)
+- Optimized for streaming write patterns
+- Better error recovery for video surveillance
+
+**NAS HDDs** (WD Red, Seagate IronWolf):
+- Good for 24/7 operation
+- Expected lifespan: 3-5 years
+- Higher cost than surveillance drives
+- Optimized for RAID (not necessary for single-drive setups)
+
+#### Your 2-Camera Setup Write Load
+
+**Annual Write Volume**:
+- 162 GB/day × 365 days = **59.1 TB/year**
+
+**Drive Recommendation**:
+| Drive Type | Rated Workload | Your Load | Lifespan Estimate | Verdict |
+|------------|---------------|-----------|-------------------|---------|
+| **Consumer HDD** | 55 TB/year | 59.1 TB/year | 1-2 years | ❌ Over spec |
+| **WD Purple** | 180 TB/year | 59.1 TB/year | 3-5 years | ✅ **Ideal** |
+| **Seagate SkyHawk** | 180 TB/year | 59.1 TB/year | 3-5 years | ✅ **Ideal** |
+| **NAS Drive** | 180+ TB/year | 59.1 TB/year | 3-5 years | ✅ Overkill |
+
+**Bottom Line**: Use **WD Purple** or **Seagate SkyHawk** for your 4TB drive. They're designed exactly for this workload.
+
+---
+
+### Recommended Surveillance HDDs
+
+**WD Purple Series** (Optimized for Surveillance):
+- **4TB WD Purple**: $80-100 (✅ perfect for your setup)
+- **6TB WD Purple**: $120-140
+- **8TB WD Purple**: $160-190
+- Rated for 64 cameras, 180 TB/year workload
+- 3-year warranty
+
+**Seagate SkyHawk Series**:
+- **4TB SkyHawk**: $80-105
+- **6TB SkyHawk**: $115-135
+- **8TB SkyHawk**: $150-180
+- Rated for 64 cameras, 180 TB/year workload
+- 3-year warranty
+- ImagePerfect firmware for AI/NVR applications
+
+**Either brand is excellent** - choose based on price and availability.
+
+---
+
+### HDD Health Monitoring
+
+#### SMART Monitoring (Critical!)
+
+Modern HDDs report health via SMART (Self-Monitoring, Analysis, and Reporting Technology). You should monitor this regularly.
+
+**Key SMART Attributes to Watch**:
+1. **Reallocated Sectors Count** - Should be 0 (any value means failing drive)
+2. **Current Pending Sectors** - Should be 0
+3. **Temperature** - Should be under 50°C (ideally 30-45°C)
+4. **Power-On Hours** - Track drive age
+5. **Uncorrectable Errors** - Should be 0
+
+**How to Monitor on Linux**:
+```bash
+# Install smartmontools
+sudo apt install smartmontools
+
+# Check drive health (replace /dev/sda with your drive)
+sudo smartctl -a /dev/sda
+
+# Run short self-test
+sudo smartctl -t short /dev/sda
+
+# Check test results after 2 minutes
+sudo smartctl -l selftest /dev/sda
+```
+
+**Set up automatic monitoring**:
+```bash
+# Enable smartd daemon
+sudo systemctl enable smartd
+sudo systemctl start smartd
+
+# Configure email alerts in /etc/smartd.conf
+```
+
+**Home Assistant Integration**:
+- Install "System Monitor" integration
+- Monitor disk usage and health
+- Set alerts when drive is >80% full
+- Track temperature and SMART status
+
+---
+
+### When to Upgrade Storage
+
+**Upgrade to larger drive if**:
+1. **Retention < 14 days** - You might miss events during vacations
+2. **Disk >80% full regularly** - System performance degrades
+3. **Adding more cameras** - See expansion chart above
+4. **SMART errors appear** - Replace immediately, drive is failing
+
+**Upgrade to second drive if**:
+1. **Want redundancy** - Mirror to second drive for backup
+2. **Adding 5+ cameras** - Split load across two drives
+3. **Different retention needs** - Long-term storage on second drive
+
+**Your Beelink EQ14 N150 has multiple USB 3.0 ports** - you can easily add a second 4TB drive later without replacing the first.
+
+---
+
+### Storage Replacement Schedule
+
+**Proactive Replacement** (recommended to avoid data loss):
+
+| Drive Type | Replace After | Monitoring | Notes |
+|------------|---------------|------------|-------|
+| **WD Purple / SkyHawk** | 3-4 years | SMART monthly | Before warranty expires |
+| **Consumer HDD** | 2 years | SMART weekly | Not recommended |
+| **High-activity setup** | 2-3 years | SMART weekly | 8+ cameras or high bitrate |
+
+**Reactive Replacement** (wait for SMART warnings):
+- More risky - could lose footage
+- Only if you have good backups (SD cards in cameras)
+- Monitor SMART religiously
+
+**Your Setup**: Plan to replace your 4TB surveillance drive every **3-4 years** for peace of mind.
+
+---
+
+### Quick Answer: Is 4TB Good Enough?
+
+**For your 2-camera setup**:
+- ✅ **Yes, 4TB is good** - provides ~23 days retention
+- ✅ **Use WD Purple or Seagate SkyHawk** - designed for 24/7 recording
+- ✅ **Well within workload limits** - only 59 TB/year vs 180 TB/year rated
+- ✅ **Monitor SMART monthly** - catch failures before data loss
+- ✅ **Plan to replace in 3-4 years** - proactive maintenance
+
+**Consider 6TB if**:
+- You want 30+ days retention (monthly review cycle)
+- High-traffic areas with lots of motion (bitrates spike)
+- Planning to add 1-2 more cameras soon
+
+**Consider 8TB+ if**:
+- Adding 4+ more cameras
+- Want 60-90 day retention for legal/insurance purposes
+- High-value property requiring extended footage
+
+**Your current 4TB is solid for 2 cameras.**
+
+---
+
 ## Storage Calculations by Resolution
 
 ### Reolink Video Doorbell PoE (2K / 5MP)
