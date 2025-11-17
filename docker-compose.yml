@@ -57,6 +57,7 @@ services:
       - "8555:8555/tcp" # WebRTC over TCP
       - "8555:8555/udp" # WebRTC over UDP
     environment:
+      # important as .env file doesnt get auto loaded into the docker compose context.
       - TZ=${TZ:-America/New_York}
       - FRIGATE_RTSP_PASSWORD=${FRIGATE_RTSP_PASSWORD:-changeme}
       - FRIGATE_REOLINK_USERNAME=${FRIGATE_REOLINK_USERNAME:-admin}
