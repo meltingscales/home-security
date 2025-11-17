@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   # Mosquitto MQTT Broker (required for Frigate <-> Home Assistant communication)
@@ -38,9 +38,9 @@ services:
     image: ghcr.io/blakeblackshear/frigate:stable
     restart: unless-stopped
     privileged: true
-    shm_size: "512mb"  # Increase if you get "Bus error" - try 1gb or 2gb
+    shm_size: "512mb" # Increase if you get "Bus error" - try 1gb or 2gb
     devices:
-      - /dev/bus/usb:/dev/bus/usb  # For Google Coral USB TPU
+      - /dev/bus/usb:/dev/bus/usb # For Google Coral USB TPU
       # Uncomment if you have Intel GPU for hardware acceleration
       # - /dev/dri/renderD128:/dev/dri/renderD128
     volumes:
@@ -50,17 +50,18 @@ services:
       - type: tmpfs
         target: /tmp/cache
         tmpfs:
-          size: 1000000000  # 1GB tmpfs for cache
+          size: 1000000000 # 1GB tmpfs for cache
     ports:
-      - "8971:8971"  # Web UI (authenticated)
-      - "8554:8554"  # RTSP feeds
-      - "8555:8555/tcp"  # WebRTC over TCP
-      - "8555:8555/udp"  # WebRTC over UDP
+      - "8971:8971" # Web UI (authenticated)
+      - "8554:8554" # RTSP feeds
+      - "8555:8555/tcp" # WebRTC over TCP
+      - "8555:8555/udp" # WebRTC over UDP
     environment:
       - TZ=${TZ:-America/New_York}
       - FRIGATE_RTSP_PASSWORD=${FRIGATE_RTSP_PASSWORD:-changeme}
       - FRIGATE_REOLINK_USERNAME=${FRIGATE_REOLINK_USERNAME:-admin}
       - FRIGATE_REOLINK_PASSWORD=${FRIGATE_REOLINK_PASSWORD}
+      - FRIGATE_IP_FRONT_DOOR_CAM=${FRIGATE_IP_FRONT_DOOR_CAM}
     networks:
       - homelab
     depends_on:
