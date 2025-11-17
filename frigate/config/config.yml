@@ -66,6 +66,48 @@ cameras:
         - cat
         - car
 
+  reolink_camera_doorbell:
+    enabled: true
+    ffmpeg:
+      inputs:
+        # Main stream for recording (high quality)
+        - path: rtsp://{FRIGATE_REOLINK_USERNAME}:{FRIGATE_REOLINK_PASSWORD}@{FRIGATE_IP_DOORBELL_CAM}:554/h264Preview_01_main
+          roles:
+            - record
+        # Sub stream for detection (lower quality, less CPU)
+        - path: rtsp://{FRIGATE_REOLINK_USERNAME}:{FRIGATE_REOLINK_PASSWORD}@{FRIGATE_IP_DOORBELL_CAM}:554/h264Preview_01_sub
+          roles:
+            - detect
+    detect:
+      enabled: true
+      width: 640 # Substream resolution
+      height: 480
+      fps: 5
+    record:
+      enabled: true
+      retain:
+        days: 30
+        mode: all # Record 24/7
+      alerts:
+        retain:
+          days: 30
+      detections:
+        retain:
+          days: 30
+    snapshots:
+      enabled: true
+      timestamp: true
+      bounding_box: true
+      crop: false
+      retain:
+        default: 30
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+        - car
+
   # Example doorbell camera - UNCOMMENT AND CONFIGURE WHEN YOUR DOORBELL ARRIVES
   # doorbell:
   #   enabled: true
