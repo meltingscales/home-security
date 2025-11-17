@@ -24,7 +24,7 @@ detectors:
 # Configure your cameras here
 cameras:
   # Reolink RLC-510A Camera
-  reolink_camera_1:
+  reolink_camera_front_door:
     enabled: true
     ffmpeg:
       inputs:
