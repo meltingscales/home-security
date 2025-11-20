@@ -108,6 +108,132 @@ cameras:
         - cat
         - car
 
+  reolink_camera_flood:
+    enabled: true
+    ffmpeg:
+      inputs:
+        # Main stream for recording (high quality)
+        - path: rtsp://{FRIGATE_REOLINK_USERNAME_FLOOD}:{FRIGATE_REOLINK_PASSWORD_FLOOD}@{FRIGATE_IP_FLOOD_CAM}:554/h264Preview_01_main
+          roles:
+            - record
+        # Sub stream for detection (lower quality, less CPU)
+        - path: rtsp://{FRIGATE_REOLINK_USERNAME_FLOOD}:{FRIGATE_REOLINK_PASSWORD_FLOOD}@{FRIGATE_IP_FLOOD_CAM}:554/h264Preview_01_sub
+          roles:
+            - detect
+    detect:
+      enabled: true
+      width: 640 # Substream resolution
+      height: 480
+      fps: 5
+    record:
+      enabled: true
+      retain:
+        days: 30
+        mode: all # Record 24/7
+      alerts:
+        retain:
+          days: 30
+      detections:
+        retain:
+          days: 30
+    snapshots:
+      enabled: true
+      timestamp: true
+      bounding_box: true
+      crop: false
+      retain:
+        default: 30
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+        - car
+
+  reolink_camera_run1:
+    enabled: true
+    ffmpeg:
+      inputs:
+        # Main stream for recording (high quality)
+        - path: rtsp://{FRIGATE_REOLINK_USERNAME_RUN1}:{FRIGATE_REOLINK_PASSWORD_RUN1}@{FRIGATE_IP_RUN1_CAM}:554/h264Preview_01_main
+          roles:
+            - record
+        # Sub stream for detection (lower quality, less CPU)
+        - path: rtsp://{FRIGATE_REOLINK_USERNAME_RUN1}:{FRIGATE_REOLINK_PASSWORD_RUN1}@{FRIGATE_IP_RUN1_CAM}:554/h264Preview_01_sub
+          roles:
+            - detect
+    detect:
+      enabled: true
+      width: 640 # Substream resolution
+      height: 480
+      fps: 5
+    record:
+      enabled: true
+      retain:
+        days: 30
+        mode: all # Record 24/7
+      alerts:
+        retain:
+          days: 30
+      detections:
+        retain:
+          days: 30
+    snapshots:
+      enabled: true
+      timestamp: true
+      bounding_box: true
+      crop: false
+      retain:
+        default: 30
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+        - car
+
+  reolink_camera_run2:
+    enabled: true
+    ffmpeg:
+      inputs:
+        # Main stream for recording (high quality)
+        - path: rtsp://{FRIGATE_REOLINK_USERNAME_RUN2}:{FRIGATE_REOLINK_PASSWORD_RUN2}@{FRIGATE_IP_RUN2_CAM}:554/h264Preview_01_main
+          roles:
+            - record
+        # Sub stream for detection (lower quality, less CPU)
+        - path: rtsp://{FRIGATE_REOLINK_USERNAME_RUN2}:{FRIGATE_REOLINK_PASSWORD_RUN2}@{FRIGATE_IP_RUN2_CAM}:554/h264Preview_01_sub
+          roles:
+            - detect
+    detect:
+      enabled: true
+      width: 640 # Substream resolution
+      height: 480
+      fps: 5
+    record:
+      enabled: true
+      retain:
+        days: 30
+        mode: all # Record 24/7
+      alerts:
+        retain:
+          days: 30
+      detections:
+        retain:
+          days: 30
+    snapshots:
+      enabled: true
+      timestamp: true
+      bounding_box: true
+      crop: false
+      retain:
+        default: 30
+    objects:
+      track:
+        - person
+        - dog
+        - cat
+        - car
+
   # Example doorbell camera - UNCOMMENT AND CONFIGURE WHEN YOUR DOORBELL ARRIVES
   # doorbell:
   #   enabled: true
